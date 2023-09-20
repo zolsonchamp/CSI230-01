@@ -7,9 +7,9 @@ read prefix
 
 if [ $prefix -eq 24]
 then
-numHosts= 254
+numHosts= 256
 else
-numHosts=65025
+numHosts=$((2**(32 - prefix)))
 fi
 
 IFS='.' read -r -a ip_parts <<< "$ip_address"
@@ -17,7 +17,7 @@ network="${ip_parts[0]}.${ip_parts[1]}.${ip_parts[2]}"
 binaryNet1=$(echo "obase=2;${ip_parts[0]}" | bc)
 binaryNet2=$(echo "obase=2;${ip_parts[1]}" | bc)
 binaryNet3=$(echo "obase=2;${ip_parts[2]}" | bc)
-binaryNetwork = "$binaryNet0.$binaryNet1.$binaryNet2"
+binaryNetwork="$binaryNet0.$binaryNet1.$binaryNet2"
 
 output_file="ip_addresses.txt"
 
