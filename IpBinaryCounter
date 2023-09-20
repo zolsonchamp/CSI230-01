@@ -1,0 +1,22 @@
+#!/bin/bash
+
+ip_address=$1
+prefix=$2
+
+IFS='.' read -r -a ip_parts <<< "$ip_address"
+network="${ip_parts[0]}.${ip_parts[1]}.${ip_parts[2]}"
+binaryNet1=$(echo "obase=2;${ip_parts[0]}" | bc)
+binaryNet2=$(echo "obase=2;${ip_parts[1]}" | bc)
+binaryNet3=$(echo "obase=2;${ip_parts[2]}" | bc)
+binaryNetwork = "$binaryNet0.$binaryNet1.$binaryNet2"
+
+output_file="ip_addresses.txt"
+
+host=1
+
+while [ "$host" -lt "$((num_hosts - 1))" ]; do
+    binaryHost=$(echo "obase=2;$host" | bc)
+    printf '%08d' "$binaryNetwork" "$binaryHost" >> "$output_file"
+    host=$((host + 1))
+done
+
