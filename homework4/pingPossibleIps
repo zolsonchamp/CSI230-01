@@ -1,0 +1,13 @@
+#!/bin/bash
+
+input_file="possibleips.txt"
+output_file="activehosts.txt"
+
+while IFS= read -r ip; do
+  if ping -c 1 "$ip" &> /dev/null; then
+    echo "Host $ip is active."
+    echo "$ip" >> "$output_file"
+  else
+    echo "Host $ip is not active."
+  fi
+done < "$input_file"
