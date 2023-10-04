@@ -1,11 +1,10 @@
 #! /bin/bash
 
 userChoice="-1"
-
+input="/var/log/apache2/access.log"
 
 function listIps ()
 {
-input="/var/log/apache2/access.log"
 < "$input" cut -d ' ' -f 1 | sort | uniq >> clientIps.txt
 }
 
@@ -70,7 +69,7 @@ do
 	elif [ "$userChoice" == "5" ]
         then
                 resetBlockedClients
-	elif [ "$userChoice" == "5" ]
+	elif [ "$userChoice" == "6" ]
         then
                 displayHistogram	
 	elif [ "$userChoice" == "7" ]
