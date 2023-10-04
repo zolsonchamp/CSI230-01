@@ -27,9 +27,29 @@ do
 
 	if [ "$count" -ge 3 ]
 	then
-		"$ip" >> blacklist.txt
+		"$ip" >> blacklisted.txt
 	fi
 done < "$badRequest"
+}
+
+function blockBadClients ()
+{
+while read -r line;
+do
+	iptables -A INPUT -s line -j DROP
+done < "blacklisted.txt"
+
+}
+function resetBlockedClients ()
+{
+iptables -F
+iptables -t nat -F
+iptables -t mangle -F
+iptables -X
+}
+function displayHistogram ()
+{
+awk '$9 == "200" { date=$4; gsub("[[/:]"," ",date); split(date, a); day=a[1]; month=a[2]; year=a[3]; count[day"/"month"/"year]++; } END { for (date in count) { print count[date], "visits in", date; } }' "$input"
 }
 while [ "$userChoice" != "7" ];
 do
@@ -44,6 +64,15 @@ do
 	elif [ "$userChoice" == "3" ]
 	then
 		badClients
+	elif [ "$userChoice" == "4" ]
+        then
+                blockBadClients
+	elif [ "$userChoice" == "5" ]
+        then
+                resetBlockedClients
+	elif [ "$userChoice" == "5" ]
+        then
+                displayHistogram	
 	elif [ "$userChoice" == "7" ]
 	then
 		break;
@@ -52,4 +81,3 @@ do
 	fi
 
 done
-
