@@ -11,11 +11,11 @@ echo "<tr><th>IP</th>Time</th><th>Requested Page</th><th>User Agent</th></tr>" >
 while read -r line;
 do
 ip=$(echo "$line" | awk '{print $1}')
-time=$(echo "$line" | awk -F "[" '{print $2}' | awk -F "]" '{print $1}')
+timeAccess=$(echo "$line" | awk -F "[" '{print $2}' | awk -F "]" '{print $1}')
 requestedPage=$(echo "$line" | awk -F '"' '{print $2}')
 userAgent=$(echo "$line" | awk -F '"' '{print $6}')
 
-echo "<tr><td>$ip</td><td>$time</td><td>$requestedPage</td><td>$userAgent</td></tr>" >> $htmlOutput
+echo "<tr><td>$ip</td><td>$timeAccess</td><td>$requestedPage</td><td>$userAgent</td></tr>" >> $htmlOutput
 done < $logFile
 
 echo "</table>" >> $htmlOutput
