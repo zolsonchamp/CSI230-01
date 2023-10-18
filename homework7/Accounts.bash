@@ -1,25 +1,22 @@
 #!/bin/bash
 
-
 Help(){
-echo "--------------------------------"
-echo "Invalid Option"
-echo "Valid Options:"
-echo "-d List Disabled Accounts"
-echo "-c Count Logins of a User"
-echo "--------------------------------"
+echo "----------------------------"
+echo "Valid options:"
+echo "-c for user count"
+echo "-d for disabled accounts"
+echo "----------------------------"
 }
 
-while getopts ":dc" option; do
-case $option in
-d)
+if [ "$1" == "-d" ]
+then
 cat /etc/shadow | awk -F: '$2 == "!" || $2 == "*" {print $1}'
-;;
-c)
-
-;;
-*)
+elif [ "$1" == "-c" ]
+then
+while IFS= read -r user; do
+loginCount=$(last | cut -c 1-8 | grep -c "$user")
+echo "Login count for $user: $loginCount"
+done < "usr.txt"
+else
 Help
-;;
-esac
-done
+fi
